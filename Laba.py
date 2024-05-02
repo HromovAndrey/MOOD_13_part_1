@@ -1,32 +1,78 @@
-# Завдання 1
-# Користувач заповнює з клавіатури список цілих.
-# Стисніть отримані дані та збережіть їх у файл. Після цього
-# завантажте дані з файлу в новий список.
+# Завдання 2
+# При старті програми з’являється меню з наступними
+# пунктами:
+# 1. Завантаження даних;
+# 2. Збереження даних;
+# 3. Додавання даних;
+# 4. Видалення даних.
+# Використайте список цілих як сховища даних. Також
+# застосуйте стиснення/розпакування даних.
 
 import pickle
 import gzip
 
+def load_data(filename):
+    try:
+        with gzip.open(filename, 'rb') as f:
+            data = pickle.load(f)
+        print("Дані успішно завантажено з файлу.")
+        return data
+    except FileNotFoundError:
+        print("Файл з даними не знайдено.")
+        return []
 
-def save_list_to_file(data, filename):
+def save_data(data, filename):
     with gzip.open(filename, 'wb') as f:
         pickle.dump(data, f)
+    print("Дані успішно збережено у файл.")
 
-def load_list_from_file(filename):
-    with gzip.open(filename, 'rb') as f:
-        loaded_data = pickle.load(f)
-    return loaded_data
-
-input_list = []
-while True:
+def add_data(data):
     try:
-        number = int(input("Введіть ціле число (або 'q' для завершення): "))
-        input_list.append(number)
+        number = int(input("Введіть ціле число для додавання до списку: "))
+        data.append(number)
+        print("Дані успішно додано до списку.")
     except ValueError:
-        if input("Ви впевнені, що хочете завершити введення? (y/n): ").lower() == 'y':
+        print("Введіть коректне ціле число.")
+
+def remove_data(data):
+    try:
+        number = int(input("Введіть ціле число, яке потрібно видалити зі списку: "))
+        if number in data:
+            data.remove(number)
+            print("Дані успішно видалено зі списку.")
+        else:
+            print("Вказане число не знайдено у списку.")
+    except ValueError:
+        print("Введіть коректне ціле число.")
+
+def main():
+    data = []
+    while True:
+        print("\nМеню:")
+        print("1. Завантаження даних")
+        print("2. Збереження даних")
+        print("3. Додавання даних")
+        print("4. Видалення даних")
+        print("5. Вихід")
+
+        choice = input("Виберіть опцію: ")
+
+        if choice == '1':
+            filename = input("Введіть ім'я файлу для завантаження даних: ")
+            data = load_data(filename)
+        elif choice == '2':
+            filename = input("Введіть ім'я файлу для збереження даних: ")
+            save_data(data, filename)
+        elif choice == '3':
+            add_data(data)
+        elif choice == '4':
+            remove_data(data)
+        elif choice == '5':
+            print("Програма завершує роботу.")
             break
+        else:
+            print("Некоректний вибір. Будь ласка, виберіть опцію зі списку.")
 
-save_list_to_file(input_list, "compressed_list.pklz")
-print("Список успішно збережено у файл.")
 
-loaded_list = load_list_from_file("compressed_list.pklz")
-print("Дані успішно завантажено з файлу:", loaded_list)
+if __name__ == "__main__":
+    main()
