@@ -10,7 +10,6 @@
 
 import pickle
 import gzip
-
 def load_data(filename):
     try:
         with gzip.open(filename, 'rb') as f:
@@ -20,12 +19,10 @@ def load_data(filename):
     except FileNotFoundError:
         print("Файл з даними не знайдено.")
         return []
-
 def save_data(data, filename):
     with gzip.open(filename, 'wb') as f:
         pickle.dump(data, f)
     print("Дані успішно збережено у файл.")
-
 def add_data(data):
     try:
         number = int(input("Введіть ціле число для додавання до списку: "))
@@ -33,7 +30,6 @@ def add_data(data):
         print("Дані успішно додано до списку.")
     except ValueError:
         print("Введіть коректне ціле число.")
-
 def remove_data(data):
     try:
         number = int(input("Введіть ціле число, яке потрібно видалити зі списку: "))
@@ -44,7 +40,6 @@ def remove_data(data):
             print("Вказане число не знайдено у списку.")
     except ValueError:
         print("Введіть коректне ціле число.")
-
 def main():
     data = []
     while True:
@@ -54,9 +49,7 @@ def main():
         print("3. Додавання даних")
         print("4. Видалення даних")
         print("5. Вихід")
-
         choice = input("Виберіть опцію: ")
-
         if choice == '1':
             filename = input("Введіть ім'я файлу для завантаження даних: ")
             data = load_data(filename)
@@ -72,7 +65,6 @@ def main():
             break
         else:
             print("Некоректний вибір. Будь ласка, виберіть опцію зі списку.")
-
 
 if __name__ == "__main__":
     main()
